@@ -333,7 +333,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const encoded = params.get('d');
   if (encoded) {
     try {
-      const data = JSON.parse(atob(encoded));
+      const data = JSON.parse(decodeURIComponent(atob(encoded)));
       childName = data.name || '';
       tasks = (data.tasks || []).map((t, i) => ({ id: i + 1, text: t, done: false }));
       document.getElementById('name-input').value = childName;
@@ -400,7 +400,7 @@ function startDay() {
 function buildShareUrl() {
   const name = document.getElementById('name-input').value.trim() || childName || 'Lille vän';
   const payload = { name, tasks: tasks.map(t => t.text) };
-  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+  const encoded = btoa(encodeURIComponent(JSON.stringify(payload)));
   const base = window.location.href.split('?')[0];
   return base + '?d=' + encoded;
 }
